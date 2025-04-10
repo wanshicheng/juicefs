@@ -17,6 +17,7 @@
 package vfs
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -69,5 +70,13 @@ func TestAccessLog(t *testing.T) {
 	n = readAccessLog(1, buf)
 	if n != 2 || string(buf[:2]) != "#\n" {
 		t.Fatalf("expected line: %q", string(buf[:n]))
+	}
+
+	target := "123\t\nabc"
+	logit(ctx, "testQuote", 0, "for %s", target)
+	_ = readAccessLog(1, buf)
+	str := strings.Split(string(buf), " ")[5]
+	if len(str) != 10 {
+		t.Fatal(str)
 	}
 }
