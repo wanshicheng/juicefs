@@ -1,8 +1,5 @@
-//go:build !wasm
-// +build !wasm
-
 /*
- * JuiceFS, Copyright 2022 Juicedata, Inc.
+ * JuiceFS, Copyright 2020 Juicedata, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +14,26 @@
  * limitations under the License.
  */
 
-package main
+ package object
 
-import (
+ import (
 	"os"
-
-	"github.com/juicedata/juicefs/cmd"
-	"github.com/juicedata/juicefs/pkg/utils"
+	"time"
 )
 
-var logger = utils.GetLogger("juicefs")
+func getOwnerGroup(info os.FileInfo) (string, string) {
+	return "", ""
+}
 
-func main() {
-	err := cmd.Main(os.Args)
-	if err != nil {
-		logger.Fatal(err)
-	}
+func lookupUser(name string) int {
+	return 0
+}
+
+func lookupGroup(name string) int {
+	return 0
+}
+
+func (d *filestore) Chtimes(key string, mtime time.Time) error {
+	p := d.path(key)
+	return os.Chtimes(p, mtime, mtime)
 }

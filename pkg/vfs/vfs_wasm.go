@@ -1,8 +1,5 @@
-//go:build !wasm
-// +build !wasm
-
 /*
- * JuiceFS, Copyright 2022 Juicedata, Inc.
+ * JuiceFS, Copyright 2020 Juicedata, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +14,7 @@
  * limitations under the License.
  */
 
-package main
+ package vfs
 
-import (
-	"os"
-
-	"github.com/juicedata/juicefs/cmd"
-	"github.com/juicedata/juicefs/pkg/utils"
-)
-
-var logger = utils.GetLogger("juicefs")
-
-func main() {
-	err := cmd.Main(os.Args)
-	if err != nil {
-		logger.Fatal(err)
-	}
-}
+const O_ACCMODE = 0xff
+const F_UNLCK = 0x01
