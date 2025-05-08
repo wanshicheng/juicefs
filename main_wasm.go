@@ -1,39 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"syscall/js"
-
+	"strconv"
 	"github.com/juicedata/juicefs/wasm"
 )
 
-func logToJS(message string) {
-	js.Global().Get("console").Call("log", "[Go]:", message)
-}
-
-func registerFuncs() {
-	js.Global().Set("format", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		if len(args) < 1 {
-			return "Database URL parameter required"
-		}
-		dbUrl := args[0].String()
-
-		err := wasm.Format(dbUrl)
-		if err != nil {
-			errMsg := fmt.Sprintf("Format failed: %v", err)
-			logToJS(errMsg)
-			return errMsg
-		}
-
-		logToJS("Format completed successfully")
-		return nil
-	}))
-}
-
 func main() {
-	registerFuncs()
+  wasm.RegisterFuncs()
+  sum := wasm.TestAdd(1, 2)
+  wasm.LogToJS("TestAdd(1, 2) = " + strconv.Itoa(sum))
 
-	logToJS("JuiceFS WebAssembly module initialized")
-
+	// wasm.LogToJS("JuiceFS WebAssembly module initialized")
 	select {}
 }

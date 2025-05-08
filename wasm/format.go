@@ -9,28 +9,28 @@ import (
 
 var logger = utils.GetLogger("juicefs")
 
-// Format 格式化JuiceFS文件系统
-// 简化错误处理和日志记录
+// Format formats a JuiceFS file system
+// Simplified error handling and logging
 func Format(uri string) error {
 	if uri == "" {
-		return fmt.Errorf("URI不能为空")
+		return fmt.Errorf("URI cannot be empty")
 	}
 
-	// 创建元数据客户端
+	// Create metadata client
 	m := meta.NewClient(uri, nil)
 	if m == nil {
-		return fmt.Errorf("创建元数据客户端失败")
+		return fmt.Errorf("Failed to create metadata client")
 	}
 
-	// 检查格式是否已存在
+	// Check if format already exists
 	format, err := m.Load(false)
 	if err == nil && format != nil {
-		logger.Infof("格式已存在: %s", format.Name)
+		logger.Infof("Format already exists: %s", format.Name)
 		return nil
 	}
 
-	// TODO: 根据实际需求添加格式化逻辑
-	logger.Infof("正在格式化: %s", uri)
+	// TODO: Add formatting logic based on actual requirements
+	logger.Infof("Formatting: %s", uri)
 
 	return nil
 }
